@@ -1,0 +1,95 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "OpenTelemetryMetric": {
+            "type": "object"
+        },
+        "AwsCloudWatchSignals": {
+            "type": "string",
+            "description": "The name of the AWS CloudWatch signal to monitor.",
+            "enum": [
+                "lambda_errors",
+                "lambda_latency",
+                "lambda_invocations",
+                "lambda_throttles",
+                "lambda_concurrent_executions",
+                "api_gateway_5xx_errors",
+                "api_gateway_4xx_errors",
+                "api_gateway_latency",
+                "sqs_approximate_number_of_messages_visible",
+                "sqs_approximate_age_of_oldest_message",
+                "dynamodb_read_throttle_events",
+                "dynamodb_write_throttle_events"
+            ]
+        },
+        "KubernetesSignals": {
+            "type": "string",
+            "description": "The name of the well-known Kubernetes signal to monitor.",
+            "enum": [
+                "k8s_pod_cpu_usage",
+                "k8s_pod_memory_usage",
+                "k8s_node_cpu_usage",
+                "k8s_node_memory_usage"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "signal": {
+            "description": "The telemetry that expresses the state of the system to be monitored. If a well-known signal is used it can be expressed as a string. Even if not using one of the well-known signals a string can be used to describe the signal and the model will deliver a one-shot interpretation of the signal as often as needed. OpenTelemetry metrics are natively supported and can be expressed as an object.",
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/OpenTelemetryMetric"
+                },
+                {
+                    "$ref": "#/definitions/AwsCloudWatchSignals"
+                },
+                {
+                    "$ref": "#/definitions/KubernetesSignals"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "object"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "scope": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            ]
+        },
+        "thresholds": {
+            "type": "array",
+            "items": {
+                "anyof": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "object"
+                    }
+                ]
+            }
+        }
+    }
+}
