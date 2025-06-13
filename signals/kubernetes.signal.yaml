@@ -1,4 +1,6 @@
-kubernetes_signals:
+group: kubernetes
+description: Kubernetes Signals
+signals:
   - name: k8s_pod_cpu_usage
     description: Measures the CPU usage of a Kubernetes pod.
     scope:

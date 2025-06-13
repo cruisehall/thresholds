@@ -12,18 +12,27 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type Signal struct {
-	Name        string `yaml:"name"`
+type Scope struct {
+	Key         string `yaml:"key"`
 	Description string `yaml:"description"`
-	Scope       []struct {
-		Key         string `yaml:"key"`
-		Description string `yaml:"description"`
-	} `yaml:"scope"`
+}
+
+type Signal struct {
+	Name        string  `yaml:"name"`
+	Description string  `yaml:"description"`
+	Scope       []Scope `yaml:"scope"`
+}
+
+type SignalFile struct {
+	Group       string   `yaml:"group"`
+	Description string   `yaml:"description"`
+	Signals     []Signal `yaml:"signals"`
 }
 
 type SignalGroup struct {
-	Title   string
-	Signals []Signal
+	Title       string
+	Description string
+	Signals     []Signal
 }
 
 type TemplateData struct {
@@ -44,22 +53,16 @@ func main() {
 			log.Fatalf("Failed to read %s: %v", file, err)
 		}
 
-		var signals []Signal
-		// The top-level key is not known, so unmarshal into a map
-		var raw map[string][]Signal
-		if err := yaml.Unmarshal(content, &raw); err != nil {
+		var signalFile SignalFile
+		if err := yaml.Unmarshal(content, &signalFile); err != nil {
 			log.Fatalf("Failed to unmarshal %s: %v", file, err)
 		}
-		for _, v := range raw {
-			signals = v
-			break
-		}
 
-		// Title from filename
-		title := groupTitleFromFilename(filepath.Base(file))
+		title := strings.Title(strings.ReplaceAll(signalFile.Group, "_", " "))
 		groups = append(groups, SignalGroup{
-			Title:   title,
-			Signals: signals,
+			Title:       title,
+			Description: signalFile.Description,
+			Signals:     signalFile.Signals,
 		})
 	}
 
@@ -85,9 +88,6 @@ func main() {
 	}
 	fmt.Println("Generated signals/all.md")
 }
-
-func groupTitleFromFilename(filename string) string {
-	base := strings.TrimSuffix(filename, ".signal.yaml")
 	switch base {
 	case "aws_cloudwatch":
 		return "AWS CloudWatch Metrics"
