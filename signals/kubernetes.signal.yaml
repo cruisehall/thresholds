@@ -1,0 +1,27 @@
+group: kubernetes
+description: Kubernetes Signals
+signals:
+  - name: k8s_pod_cpu_usage
+    description: Measures the CPU usage of a Kubernetes pod.
+    scope:
+      - key: namespace
+        description: The namespace of the pod.
+      - key: pod_name
+        description: The name of the pod.
+  - name: k8s_pod_memory_usage
+    description: Measures the memory usage of a Kubernetes pod.
+    scope:
+      - key: namespace
+        description: The namespace of the pod.
+      - key: pod_name
+        description: The name of the pod.
+  - name: k8s_node_cpu_usage
+    description: Measures the CPU usage of a Kubernetes node.
+    scope:
+      - key: node_name
+        description: The name of the node.
+  - name: k8s_node_memory_usage
+    description: Measures the memory usage of a Kubernetes node.
+    scope:
+      - key: node_name
+        description: The name of the node.

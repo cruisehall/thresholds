@@ -1,0 +1,58 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+        "group",
+        "signals"
+    ],
+    "properties": {
+        "group": {
+            "type": "string",
+            "description": "The group identifier for the signals"
+        },
+        "signals": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "description",
+                    "scope"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The unique identifier of the signal"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "A description of what the signal measures"
+                    },
+                    "scope": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "key",
+                                "description"
+                            ],
+                            "properties": {
+                                "key": {
+                                    "type": "string",
+                                    "description": "The scope key identifier"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "A description of what the scope key represents"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                },
+                "additionalProperties": false
+            }
+        }
+    },
+    "additionalProperties": false
+}

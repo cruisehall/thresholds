@@ -1,0 +1,17 @@
+# Signals
+
+{{- range .Groups }}
+## {{ .Title }}
+
+{{- range .Signals }}
+
+### `{{ .Name }}`
+{{ .Description }}
+
+#### Scope
+{{- range .Scope }}
+- `{{ .Key }}`: {{ .Description }}
+{{- end }}
+
+{{- end }}
+{{- end }}

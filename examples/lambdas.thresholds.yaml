@@ -1,0 +1,10 @@
+---
+signal: lambda_errors
+scope: a
+thresholds:
+  - 10
+---
+signal: {}
+scope: a
+thresholds:
+  - 20
