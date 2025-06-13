@@ -1,11 +1,11 @@
-
 ## Project Structure
 
 ```
 thresholds/
 ├── cmd/            # Entrypoint applications
 │   └── thresholds/ # Main application
-│       └── main.go
+│       ├── main.go
+│       └── gen_signals_doc.go
 ├── internal/       # Private application code
 ├── pkg/            # Public reusable packages
 ├── go.mod
@@ -29,7 +29,7 @@ go get gopkg.in/yaml.v3
 Then generate the documentation:
 
 ```sh
-go run gen_signals_doc.go
+go run cmd/thresholds/gen_signals_doc.go
 ```
 
 This script reads all `*.signal.yaml` files in the `signals` directory and uses the `signal.tmpl` template to generate the documentation.
