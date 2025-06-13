@@ -1,5 +1,5 @@
 # Signals
-## AWS CloudWatch Metrics
+## Aws Cloudwatch Metrics
 
 ### `lambda_errors`
 Counts the number of Lambda invocation errors.
@@ -72,7 +72,7 @@ Counts the number of write throttle events in DynamoDB.
 
 #### Scope
 - `table_name`: The name of the DynamoDB table.
-## Kubernetes Metrics
+## Kubernetes
 
 ### `k8s_pod_cpu_usage`
 Measures the CPU usage of a Kubernetes pod.

@@ -1,7 +1,6 @@
 package main
 
-import "fmt"
 
-func main() {
-	fmt.Println("Thresholds application started.")
-}
+// func main() {
+// 	fmt.Println("Thresholds application started.")
+// }
