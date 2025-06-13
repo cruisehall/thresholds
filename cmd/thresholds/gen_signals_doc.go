@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -48,7 +47,7 @@ func main() {
 
 	var groups []SignalGroup
 	for _, file := range files {
-		content, err := ioutil.ReadFile(file)
+		content, err := os.ReadFile(file)
 		if err != nil {
 			log.Fatalf("Failed to read %s: %v", file, err)
 		}
@@ -66,7 +65,7 @@ func main() {
 		})
 	}
 
-	tmplContent, err := ioutil.ReadFile(filepath.Join(signalsDir, "signal.tmpl"))
+	tmplContent, err := os.ReadFile(filepath.Join(signalsDir, "signal.tmpl"))
 	if err != nil {
 		log.Fatalf("Failed to read template: %v", err)
 	}
