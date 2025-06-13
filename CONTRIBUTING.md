@@ -1,4 +1,22 @@
 
+## Project Structure
+
+```
+thresholds/
+├── cmd/            # Entrypoint applications
+│   └── thresholds/ # Main application
+│       └── main.go
+├── internal/       # Private application code
+├── pkg/            # Public reusable packages
+├── go.mod
+├── .gitignore
+└── README.md
+```
+
+- Place your main application code in `cmd/thresholds/main.go`.
+- Use `internal/` for private packages.
+- Use `pkg/` for reusable libraries.
+
 ## Generating `signals/all.md`
 
 Before running the documentation generator for the first time, initialize Go modules and install dependencies:

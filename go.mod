@@ -1,4 +1,4 @@
-module thresholds
+module github.com/cruisehall/thresholds
 
 go 1.24.1
 
