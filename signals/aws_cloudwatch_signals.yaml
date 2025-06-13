@@ -1,0 +1,61 @@
+aws_cloudwatch_signals:
+  - name: lambda_errors
+    description: Counts the number of Lambda invocation errors.
+    scope:
+      - key: function_name
+        description: The name of the Lambda function.
+  - name: lambda_latency
+    description: Measures the latency of Lambda function invocations.
+    scope:
+      - key: function_name
+        description: The name of the Lambda function.
+  - name: lambda_invocations
+    description: Counts the number of times a Lambda function is invoked.
+    scope:
+      - key: function_name
+        description: The name of the Lambda function.
+  - name: lambda_throttles
+    description: Counts the number of throttled Lambda invocations.
+    scope:
+      - key: function_name
+        description: The name of the Lambda function.
+  - name: lambda_concurrent_executions
+    description: Tracks the number of concurrent Lambda executions.
+    scope:
+      - key: function_name
+        description: The name of the Lambda function.
+  - name: api_gateway_5xx_errors
+    description: Counts the number of 5xx errors returned by API Gateway.
+    scope:
+      - key: api_id
+        description: The ID of the API Gateway.
+  - name: api_gateway_4xx_errors
+    description: Counts the number of 4xx errors returned by API Gateway.
+    scope:
+      - key: api_id
+        description: The ID of the API Gateway.
+  - name: api_gateway_latency
+    description: Measures the latency of API Gateway requests.
+    scope:
+      - key: api_id
+        description: The ID of the API Gateway.
+  - name: sqs_approximate_number_of_messages_visible
+    description: Tracks the approximate number of visible messages in an SQS queue.
+    scope:
+      - key: queue_name
+        description: The name of the SQS queue.
+  - name: sqs_approximate_age_of_oldest_message
+    description: Measures the approximate age of the oldest message in an SQS queue.
+    scope:
+      - key: queue_name
+        description: The name of the SQS queue.
+  - name: dynamodb_read_throttle_events
+    description: Counts the number of read throttle events in DynamoDB.
+    scope:
+      - key: table_name
+        description: The name of the DynamoDB table.
+  - name: dynamodb_write_throttle_events
+    description: Counts the number of write throttle events in DynamoDB.
+    scope:
+      - key: table_name
+        description: The name of the DynamoDB table.
