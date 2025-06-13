@@ -1,4 +1,6 @@
-aws_cloudwatch_signals:
+group: aws_cloudwatch_metrics
+description: AWS CloudWatch Metrics
+signals:
   - name: lambda_errors
     description: Counts the number of Lambda invocation errors.
     scope:
