@@ -1,0 +1,11 @@
+{
+  // ...existing code...
+  "editor.formatOnSave": true,
+  "yaml.schemas": {
+    "./thresholds.schema.json": [
+      "*.thresholds.yml",
+      "*.thresholds.yaml"
+    ]
+  }
+  // ...existing code...
+}
