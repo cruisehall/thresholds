@@ -1,29 +1,35 @@
-signal: lambda_errors
-scope:
-  - faas.name: my_function
-    aws.region: us-east-1
+metadata:
+  title: Customers can't order food
+spec:
+  signal: lambda_errors
+  scope:
+    include:
+      - faas.name: order_food
+    exclude:
+      # Same function exists in the inactive region
+      - aws.region: us-west-2
 
-thresholds:
-  # Trigger if more than 10 errors occur in 'my_function' in any 10-minute window
-  - for_any: 10m
-    above: 10
-  # equivalent to:
-  - for_any: 10
-    window: 1m
-    above: 10
-  # Trigger if any errors occur each minute for 5 minutes
-  - for_all: 5m
-    above: 0
-  # equivalent to:
-  - for_all: 5
-    window: 1m
-    above: 0
-  # Test a tighter threshold, don't page the on-calls if triggered
-  # (only notify the informational channel)
-  - for_any: 5m
-    above: 5
-    urgent: false
-  # Create a monitor but don't subscribe any notification channels
-  - for_any: 15m
-    above: 10
-    silent: true
+  thresholds:
+    # Trigger if more than 10 errors occur in 'my_function' in any 10-minute window
+    - for_any: 10m
+      above: 10
+    # equivalent to:
+    - for_any: 10
+      window: 1m
+      above: 10
+    # Trigger if any errors occur each minute for 5 minutes
+    - for_all: 5m
+      above: 0
+    # equivalent to:
+    - for_all: 5
+      window: 1m
+      above: 0
+    # Test a tighter threshold, don't page the on-calls if triggered
+    # (only notify the informational channel)
+    - for_any: 5m
+      above: 5
+      urgent: false
+    # Create a monitor but don't subscribe any notification channels
+    - for_any: 15m
+      above: 10
+      silent: true

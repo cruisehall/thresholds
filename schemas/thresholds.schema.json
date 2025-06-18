@@ -123,72 +123,110 @@
                     "$comment": "This will take precedence over 'urgent' (i.e. no notification channels will be subscribed to the monitor)."
                 }
             }
-        }
-    },
-    "type": "object",
-    "properties": {
-        "signal": {
-            "description": "The telemetry that expresses the state of the system to be monitored. If a well-known signal is used it can be expressed as a string. Even if not using one of the well-known signals a string can be used to describe the signal and the model will deliver a one-shot interpretation of the signal as often as needed. OpenTelemetry metrics are natively supported and can be expressed as an object.",
-            "anyOf": [
-                {
-                    "$ref": "#/definitions/OpenTelemetryMetric"
+        },
+        "ScopeFilter": {
+            "type": "object"
+        },
+        "Spec": {
+            "type": "object",
+            "properties": {
+                "signal": {
+                    "description": "The telemetry that expresses the state of the system to be monitored. If a well-known signal is used it can be expressed as a string. Even if not using one of the well-known signals a string can be used to describe the signal and the model will deliver a one-shot interpretation of the signal as often as needed. OpenTelemetry metrics are natively supported and can be expressed as an object.",
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/OpenTelemetryMetric"
+                        },
+                        {
+                            "$ref": "#/definitions/AwsCloudWatchSignals"
+                        },
+                        {
+                            "$ref": "#/definitions/KubernetesSignals"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 },
-                {
-                    "$ref": "#/definitions/AwsCloudWatchSignals"
+                "scope": {
+                    "type": "object",
+                    "required": [
+                        "include"
+                    ],
+                    "properties": {
+                        "include": {
+                            "description": "List of filters to define for which resources the `signal` will be measured against the `thresholds`; will be combined in `OR` fashion.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ScopeFilter"
+                            }
+                        },
+                        "exclude": {
+                            "description": "List of filters to define for which resources the `signal` will *not* be measured against the `thresholds`; will be combined in `OR` fashion.",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ScopeFilter"
+                            }
+                        }
+                    }
                 },
-                {
-                    "$ref": "#/definitions/KubernetesSignals"
-                },
-                {
+                "thresholds": {
+                    "description": "List of thresholds to configure monitors for the signal.",
                     "type": "array",
                     "items": {
-                        "anyOf": [
+                        "allOf": [
                             {
-                                "type": "string"
+                                "$ref": "#/definitions/ThresholdDirection"
                             },
                             {
-                                "type": "object"
+                                "$ref": "#/definitions/ThresholdDuration"
+                            },
+                            {
+                                "$ref": "#/definitions/Urgency"
+                            },
+                            {
+                                "$ref": "#/definitions/Silence"
                             }
                         ]
                     }
                 }
-            ]
+            }
         },
-        "scope": {
-            "anyOf": [
-                {
-                    "type": "string"
-                },
-                {
+        "Metadata": {
+            "type": "object",
+            "properties": {
+                "annotations": {
                     "type": "object"
                 },
-                {
-                    "type": "array",
-                    "items": {
-                        "type": "object"
-                    }
+                "labels": {
+                    "type": "object"
+                },
+                "title": {
+                    "description": "Describes the significance of a breached threshold. Will be applied to the title of the monitor created for each threshold (might get suffixed with threshold configs)",
+                    "type": "string"
                 }
-            ]
-        },
-        "thresholds": {
-            "description": "List of thresholds to configure monitors for the signal.",
-            "type": "array",
-            "items": {
-                "allOf": [
-                    {
-                        "$ref": "#/definitions/ThresholdDirection"
-                    },
-                    {
-                        "$ref": "#/definitions/ThresholdDuration"
-                    },
-                    {
-                        "$ref": "#/definitions/Urgency"
-                    },
-                    {
-                        "$ref": "#/definitions/Silence"
-                    }
-                ]
             }
+        }
+    },
+    "type": "object",
+    "required": [
+        "spec"
+    ],
+    "properties": {
+        "spec": {
+            "$ref": "#/definitions/Spec"
+        },
+        "metadata": {
+            "$ref": "#/definitions/Metadata"
         }
     }
 }
