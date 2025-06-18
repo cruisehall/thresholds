@@ -1,10 +1,9 @@
----
 signal: lambda_errors
-scope: a
+scope:
+  - function_name: my_function
 thresholds:
-  - 10
----
-signal: {}
-scope: a
-thresholds:
-  - 20
+  - for_any: 10min
+    above: 10
+  - for_all: 5min
+    above: 1
+  - above 100 over 30min

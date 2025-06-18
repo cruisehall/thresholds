@@ -31,6 +31,40 @@
                 "k8s_node_cpu_usage",
                 "k8s_node_memory_usage"
             ]
+        },
+        "ThresholdDuration": {
+            "type": "object",
+            "properties": {
+                "above": {
+                    "type": "number",
+                    "description": "Trigger an alert if the signal is above this value for the specified duration."
+                },
+                "below": {
+                    "type": "number",
+                    "description": "Trigger an alert if the signal is below this value for the specified duration."
+                },
+                "at_or_above": {
+                    "type": "number",
+                    "description": "Trigger an alert if the signal is at or above this value for the specified duration."
+                },
+                "at_or_below": {
+                    "type": "number",
+                    "description": "Trigger an alert if the signal is at or below this value for the specified duration."
+                }
+            }
+        },
+        "ThresholdDirection": {
+            "type": "object",
+            "properties": {
+                "for_any": {
+                    "description": "Specify a window of time over which the threshold will be evaluated in aggregate.",
+                    "type": "string"
+                },
+                "for_all": {
+                    "description": "Specify a window of time over which the threshold will be evaluated for each minute",
+                    "type": "string"
+                }
+            }
         }
     },
     "type": "object",
@@ -79,14 +113,22 @@
             ]
         },
         "thresholds": {
+            "description": "List of thresholds to configure monitors for the signal.",
             "type": "array",
             "items": {
-                "anyof": [
+                "oneOf": [
                     {
-                        "type": "string"
+                        "allOf": [
+                            {
+                                "$ref": "#/definitions/ThresholdDirection"
+                            },
+                            {
+                                "$ref": "#/definitions/ThresholdDuration"
+                            }
+                        ]
                     },
                     {
-                        "type": "object"
+                        "type": "string"
                     }
                 ]
             }
