@@ -57,12 +57,70 @@
             "type": "object",
             "properties": {
                 "for_any": {
-                    "description": "Specify a window of time over which the threshold will be evaluated in aggregate.",
-                    "type": "string"
+                    "oneOf": [
+                        {
+                            "description": "Specify the duration of time over which the threshold will be evaluated in aggregate. Use the form {number}{s|m|h|d} (where 's' is seconds, 'm' is minutes, 'h' is hours, and 'd' is days).",
+                            "$comment": "The 'window' property will be assumed to be 1 minute if 'for_any' is a string and 'window' is not set.",
+                            "examples": [
+                                "600s",
+                                "10m"
+                            ],
+                            "pattern": "^[0-9]+[smhd]$",
+                            "type": "string"
+                        },
+                        {
+                            "type": "number",
+                            "$comment": "The 'window' property MUST be set when 'for_any' is a number.",
+                            "description": "Specify the number of windows over which the threshold will be evaluated in aggregate."
+                        }
+                    ]
                 },
                 "for_all": {
-                    "description": "Specify a window of time over which the threshold will be evaluated for each minute",
-                    "type": "string"
+                    "oneOf": [
+                        {
+                            "description": "Specify the duration of time over which the threshold will be evaluated once *for each* 'window' (default 1 minute). Use the form {number}{s|m|h|d} (where 's' is seconds, 'm' is minutes, 'h' is hours, and 'd' is days).",
+                            "$comment": "The 'window' property will be assumed to be 1 minute if 'for_all' is a string and 'window' is not set.",
+                            "examples": [
+                                "600s",
+                                "10m"
+                            ],
+                            "pattern": "^[0-9]+[smhd]$",
+                            "type": "string"
+                        },
+                        {
+                            "type": "number",
+                            "$comment": "The 'window' property MUST be set when 'for_all' is a number.",
+                            "description": "Specify the number of windows over which the threshold will be evaluated once *for each* 'window'."
+                        }
+                    ]
+                },
+                "window": {
+                    "description": "The duration of time over which the threshold will be evaluated. This is used to determine how often the threshold is checked. If not set, it defaults to 1 minute.",
+                    "type": "string",
+                    "pattern": "^[0-9]+[smhd]$",
+                    "examples": [
+                        "60s",
+                        "1m"
+                    ]
+                }
+            }
+        },
+        "Urgency": {
+            "type": "object",
+            "properties": {
+                "urgent": {
+                    "description": "Should the threshold trigger an 'Urgent' alarm? Assumed to be 'true' if not set.",
+                    "type": "boolean"
+                }
+            }
+        },
+        "Silence": {
+            "type": "object",
+            "properties": {
+                "silent": {
+                    "description": "Should all notification channels be unsubscribed from the threshold?",
+                    "type": "boolean",
+                    "$comment": "This will take precedence over 'urgent' (i.e. no notification channels will be subscribed to the monitor)."
                 }
             }
         }
@@ -116,19 +174,18 @@
             "description": "List of thresholds to configure monitors for the signal.",
             "type": "array",
             "items": {
-                "oneOf": [
+                "allOf": [
                     {
-                        "allOf": [
-                            {
-                                "$ref": "#/definitions/ThresholdDirection"
-                            },
-                            {
-                                "$ref": "#/definitions/ThresholdDuration"
-                            }
-                        ]
+                        "$ref": "#/definitions/ThresholdDirection"
                     },
                     {
-                        "type": "string"
+                        "$ref": "#/definitions/ThresholdDuration"
+                    },
+                    {
+                        "$ref": "#/definitions/Urgency"
+                    },
+                    {
+                        "$ref": "#/definitions/Silence"
                     }
                 ]
             }
