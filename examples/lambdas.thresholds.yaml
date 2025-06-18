@@ -2,6 +2,8 @@ metadata:
   title: Customers can't order food
 spec:
   signal: lambda_errors
+  # signal:
+  #   query: SELECT sum(aws.lambda.Errors) FROM Metric FACET FunctionName # New Relic
   scope:
     include:
       - faas.name: order_food

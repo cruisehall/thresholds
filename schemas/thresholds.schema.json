@@ -127,35 +127,36 @@
         "ScopeFilter": {
             "type": "object"
         },
+        "Signal": {
+            "description": "The telemetry that expresses the state of the system to be monitored. If a well-known signal is used it can be expressed as a string. Even if not using one of the well-known signals a string can be used to describe the signal and the model will deliver a one-shot interpretation of the signal as often as needed. OpenTelemetry metrics are natively supported and can be expressed as an object.",
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/OpenTelemetryMetric"
+                },
+                {
+                    "$ref": "#/definitions/AwsCloudWatchSignals"
+                },
+                {
+                    "$ref": "#/definitions/KubernetesSignals"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "description": "A free-text representation of a vendor-specific query that can be used to find the signal",
+                            "type": "string",
+                            "$comment": "Note that signals defined as a free-text query might not be portable between vendors."
+                        }
+                    }
+                }
+            ]
+        },
         "Spec": {
+            "description": "Spec",
             "type": "object",
             "properties": {
                 "signal": {
-                    "description": "The telemetry that expresses the state of the system to be monitored. If a well-known signal is used it can be expressed as a string. Even if not using one of the well-known signals a string can be used to describe the signal and the model will deliver a one-shot interpretation of the signal as often as needed. OpenTelemetry metrics are natively supported and can be expressed as an object.",
-                    "anyOf": [
-                        {
-                            "$ref": "#/definitions/OpenTelemetryMetric"
-                        },
-                        {
-                            "$ref": "#/definitions/AwsCloudWatchSignals"
-                        },
-                        {
-                            "$ref": "#/definitions/KubernetesSignals"
-                        },
-                        {
-                            "type": "array",
-                            "items": {
-                                "anyOf": [
-                                    {
-                                        "type": "string"
-                                    },
-                                    {
-                                        "type": "object"
-                                    }
-                                ]
-                            }
-                        }
-                    ]
+                    "$ref": "#/definitions/Signal"
                 },
                 "scope": {
                     "type": "object",
@@ -202,6 +203,7 @@
             }
         },
         "Metadata": {
+            "description": "Metadata",
             "type": "object",
             "properties": {
                 "annotations": {
